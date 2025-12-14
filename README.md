@@ -39,8 +39,6 @@ Supervised Fine-Tuning(SFT) → Reward Model(RM) → PPO → LoRA Merge의
 ↓
 [Final QA Model]
 
-markdown
-코드 복사
 
 ### 2.1 SFT (Supervised Fine-Tuning)
 - 인간 라벨이 포함된 QA 데이터셋으로 지도학습
@@ -68,9 +66,6 @@ RLHF-RAG-BASED-QA/
 ├── PPO.py # PPO 기반 RLHF 학습
 ├── MERGE.py # LoRA 병합 및 최종 모델 저장
 └── README.md
-
-yaml
-코드 복사
 
 ---
 
