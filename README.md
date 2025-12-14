@@ -27,10 +27,10 @@ Supervised Fine-Tuning(SFT) → Reward Model(RM) → PPO → LoRA Merge의
 
 ## 2. 전체 파이프라인 개요 (Pipeline Overview)
 
-[Dataset]
-   ↓
-[SFT (Supervised Fine-Tuning)]
-   ↓
+[Dataset]<br>
+   ↓<br>
+[SFT (Supervised Fine-Tuning)]<br>
+   ↓<br>
 [RM (Reward Model)]
    ↓
 [PPO (RL Fine-Tuning)]
