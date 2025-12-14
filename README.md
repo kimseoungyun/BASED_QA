@@ -1,36 +1,121 @@
-🧠 RLHF-RAG-BASED-QA
-Reinforcement Learning from Human Feedback (RLHF) 기반의 RAG(Retrieval-Augmented Generation) QA 모델 학습 파이프라인입니다.
-Supervised Fine-Tuning(SFT) → Reward Model(RM) → PPO → LoRA Merge 단계를 통해 Llama 기반 모델을 인간 피드백에 맞게 정제합니다.
+# 🧠 RLHF-RAG-BASED-QA  
+**Reinforcement Learning from Human Feedback (RLHF) 기반 RAG QA 모델 학습 파이프라인**
 
-📂 Project Structure
+본 프로젝트는 **Retrieval-Augmented Generation (RAG)** 환경에서  
+대규모 언어 모델(LLM)을 **인간 피드백 기반 강화학습(RLHF)** 으로 정제하여  
+질의응답(QA) 성능을 향상시키는 것을 목표로 합니다.
+
+Supervised Fine-Tuning(SFT) → Reward Model(RM) → PPO → LoRA Merge의  
+표준 RLHF 파이프라인을 구현하고,  
+실험적으로 **freeze vs fine-tuning 전략의 차이**를 비교합니다.
+
+---
+
+## 1. 프로젝트 목표 및 핵심 가치 (Goals & Core Values)
+
+### 1.1 프로젝트 목표
+- **고품질 QA 응답 생성**: RAG 기반 질의응답에서 일관성 있고 신뢰도 높은 응답 생성
+- **인간 선호 반영**: 단순 정답률이 아닌 *인간이 선호하는 응답*을 학습
+- **효율적 학습**: LoRA 및 부분 파인튜닝을 활용한 경량 RLHF 파이프라인 구현
+
+### 1.2 핵심 아이디어
+- **RLHF 적용**: 사람의 선택 데이터를 통해 보상 신호를 정의
+- **PPO 기반 안정적 강화학습**
+- **LoRA 병합(Merge)**을 통한 실사용 가능한 단일 모델 생성
+
+---
+
+## 2. 전체 파이프라인 개요 (Pipeline Overview)
+
+[Dataset]
+↓
+[SFT (Supervised Fine-Tuning)]
+↓
+[RM (Reward Model)]
+↓
+[PPO (RL Fine-Tuning)]
+↓
+[LoRA Merge]
+↓
+[Final QA Model]
+
+markdown
+코드 복사
+
+### 2.1 SFT (Supervised Fine-Tuning)
+- 인간 라벨이 포함된 QA 데이터셋으로 지도학습
+- 기본 언어 모델이 질문-응답 구조를 학습
+
+### 2.2 RM (Reward Model)
+- 두 개의 응답 중 **더 인간적인 응답**을 선택하도록 학습
+- PPO 단계에서 보상 함수 역할 수행
+
+### 2.3 PPO (Reinforcement Learning)
+- Reward Model의 점수를 보상으로 사용
+- Proximal Policy Optimization(PPO)을 통해 모델 업데이트
+
+### 2.4 MERGE (LoRA Merge)
+- 학습된 LoRA adapter를 base model에 병합
+- 단일 추론용 모델로 저장
+
+---
+
+## 3. 시스템 구조 및 폴더 구성 (Project Structure)
+
 RLHF-RAG-BASED-QA/
-├── SFT.py # Supervised Fine-Tuning (지도 학습)
-├── RM.py # Reward Model 학습 (응답 품질 평가 모델)
-├── PPO.py # Reinforcement Learning fine-tuning (PPO 알고리즘)
+├── SFT.py # Supervised Fine-Tuning
+├── RM.py # Reward Model 학습
+├── PPO.py # PPO 기반 RLHF 학습
 ├── MERGE.py # LoRA 병합 및 최종 모델 저장
 └── README.md
 
-🚀 Pipeline Overview
-SFT (Supervised Fine-Tuning)
-Human-labeled dataset으로 기본 언어모델을 지도학습.
-모델이 주어진 질문에 더 일관적이고 자연스럽게 답변하도록 학습합니다.
+yaml
+코드 복사
 
-RM (Reward Model)
-SFT 모델이 생성한 응답 중 “더 인간적인 응답”을 식별할 수 있도록 보상모델을 학습합니다.
+---
 
-PPO (Reinforcement Learning Fine-tuning)
-PPO(Proximal Policy Optimization) 알고리즘을 통해
-보상모델의 피드백을 바탕으로 언어모델을 강화학습합니다.
+## 4. Fine-Tuning 전략 비교 (핵심 실험 포인트)
 
-MERGE (LoRA Merge & Save)
-LoRA 어델터를 원본 모델에 병합하여 최종 모델을 저장합니다.
+### 🔹 기존 실험 (Baseline)
+- 모든 pretrained 모델 가중치 **freeze**
+- 학습 대상: **MLP / LoRA 헤드만 학습**
+- 장점: 빠른 학습, 안정성
+- 한계: 도메인 적응력 제한
 
-🧩 Example Models
-Base model: meta-llama/Llama-3.2-1B
-Tokenizer: HuggingFace Transformers 기반
-Quantization: BitsAndBytes (4bit, nf4)
+### 🔹 Fine-Tuning 실험 (본 프로젝트 핵심)
+- **상위 2개 Transformer 레이어 학습 허용**
+- 고수준 의미 표현(semantic representation) 미세 조정
+- 기대 효과:
+  - 도메인 적응력 향상
+  - QA 응답 품질 개선
+  - 인간 선호 반영 강화
 
-📜 License
-This project is for research and educational purposes.
-All pretrained models are from publicly available sources (e.g., Hugging Face).
+> 📌 본 README의 실험 설명은  
+> **“상위 레이어 파인튜닝을 허용한 RLHF 실험”을 기준으로 작성되었습니다.**
 
+---
+
+## 5. 모델 및 학습 설정 (Model Configuration)
+
+### 5.1 Base Model
+- **Base LLM**: `meta-llama/Llama-3.2-1B`
+- **Tokenizer**: HuggingFace Transformers
+
+### 5.2 Optimization
+- **RL Algorithm**: PPO
+- **Fine-Tuning Method**: LoRA
+- **Quantization**: BitsAndBytes (4bit, nf4)
+
+---
+
+## 6. 실험 의의 및 기대 효과
+
+- RAG 환경에서 **RLHF 적용 가능성 검증**
+- Freeze vs Partial Fine-Tuning 전략 비교
+- 실제 서비스에 적용 가능한 **경량 RLHF 파이프라인 제시**
+
+---
+
+## 7. License
+본 프로젝트는 **연구 및 교육 목적**으로 사용됩니다.  
+사용된 모든 pretrained 모델은 Hugging Face 등 공개 라이선스를 따릅니다.
