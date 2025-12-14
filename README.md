@@ -61,10 +61,10 @@ Supervised Fine-Tuning(SFT) → Reward Model(RM) → PPO → LoRA Merge의
 ## 3. 시스템 구조 및 폴더 구성 (Project Structure)
 
 RLHF-RAG-BASED-QA/
-├── SFT.py      # Supervised Fine-Tuning
-├── RM.py       # Reward Model 학습
-├── PPO.py      # PPO 기반 RLHF 학습
-├── MERGE.py    # LoRA 병합 및 최종 모델 저장
+├── SFT.py        # Supervised Fine-Tuning
+├── RM.py         # Reward Model 학습
+├── PPO.py        # PPO 기반 RLHF 학습
+├── MERGE.py      # LoRA 병합 및 최종 모델 저장
 └── README.md
 
 ---
