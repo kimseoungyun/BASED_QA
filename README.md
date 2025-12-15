@@ -9,6 +9,13 @@ Supervised Fine-Tuning(SFT) → Reward Model(RM) → PPO → LoRA Merge의
 표준 RLHF 파이프라인을 구현하고,  
 실험적으로 **freeze vs fine-tuning 전략의 차이**를 비교합니다.
 
+## 🚀 Project Context
+
+> **"From Zero to RLHF Pipeline in 7 Days"**
+
+본 프로젝트는 **1주일(7 Days)**이라는 제한된 시간 내에 주제 선정부터 모델 학습, 파이프라인 구축까지 완료한 **Intensive Sprint 프로젝트**입니다.
+특히 **RAG와 RLHF, Open Source LLM 튜닝을 처음 도입**하는 도전적인 상황에서도, SFT-RM-PPO로 이어지는 전체 학습 파이프라인을 성공적으로 구현하고 검증하는 데 집중했습니다.
+
 ---
 
 ## 1. 프로젝트 목표 및 핵심 가치 (Goals & Core Values)
@@ -114,3 +121,15 @@ RLHF-RAG-BASED-QA/<br>
 ## 7. License
 본 프로젝트는 **연구 및 교육 목적**으로 사용됩니다.  
 사용된 모든 pretrained 모델은 Hugging Face 등 공개 라이선스를 따릅니다.
+
+---
+
+## 8. Retrospective & Challenges
+
+### ⏱️ 1-Week Intensive Sprint
+주제 선정부터 최종 모델 병합(Merge)까지 **단 1주일** 동안 진행된 프로젝트입니다. 짧은 기간 내에 전체 파이프라인을 완성하기 위해, 복잡한 모델 아키텍처 변경보다는 **안정적인 베이스라인 구축과 실험 파이프라인 자동화**에 주력했습니다.
+
+### 💡 Tech Stack Expansion (First Step into RLHF & LLM)
+기존의 정형 데이터 분석을 넘어, **Open Source LLM(Llama-3.2)**을 직접 핸들링하고 **RLHF(PPO)**와 **RAG**를 결합하는 시도를 **처음으로 수행**했습니다.
+* **Challenge:** 강화학습(PPO)의 불안정한 학습 과정과 GPU 메모리 이슈.
+* **Overcome:** `bitsandbytes` 양자화(Quantization)와 `LoRA`를 적극 활용하여 경량화된 학습 환경을 구축함으로써 하드웨어 제약을 극복했습니다.
