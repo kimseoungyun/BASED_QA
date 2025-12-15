@@ -9,6 +9,7 @@ Supervised Fine-Tuning(SFT) → Reward Model(RM) → PPO → LoRA Merge의
 표준 RLHF 파이프라인을 구현하고,  
 실험적으로 **freeze vs fine-tuning 전략의 차이**를 비교합니다.
 
+---
 ## 🚀 Project Context
 
 > **"From Zero to RLHF Pipeline in 7 Days"**
@@ -16,6 +17,8 @@ Supervised Fine-Tuning(SFT) → Reward Model(RM) → PPO → LoRA Merge의
 본 프로젝트는 **1주일(7 Days)**이라는 제한된 시간 내에 주제 선정부터 모델 학습, 파이프라인 구축까지 완료한 **Intensive Sprint 프로젝트**입니다.
 특히 **RAG와 RLHF, Open Source LLM 튜닝을 처음 도입**하는 도전적인 상황에서도, SFT-RM-PPO로 이어지는 전체 학습 파이프라인을 성공적으로 구현하고 검증하는 데 집중했습니다.
 
+* **수행 기간:** 2025.10.24 ~ 2025.10.31
+* **핵심 성과:** RAG와 RLHF, Open Source LLM 튜닝을 처음 도입하여 SFT-RM-PPO 파이프라인 전체 구현
 ---
 
 ## 1. 프로젝트 목표 및 핵심 가치 (Goals & Core Values)
